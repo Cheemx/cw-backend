@@ -1,0 +1,27 @@
+app: cheems-writes
+service: cw-backend
+frameworkVersion: '>= 3.38.0'
+
+provider:
+  name: aws
+  runtime: provided.al2023
+  region: ap-south-1
+
+functions:
+  hello:
+    handler: bootstrap
+    package:
+      patterns:
+        - bin/*
+      artifact: bin/hello.zip
+      individually: true
+    events:
+      - httpApi:
+          path: /hello
+          method: get
+  # authorize:
+  #   handler: bin/auth
+  #   events:
+  #     - httpApi:
+    #       path: /login
+    #       method: post
