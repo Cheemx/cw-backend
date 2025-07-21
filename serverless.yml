@@ -19,9 +19,14 @@ functions:
       - httpApi:
           path: /hello
           method: get
-  # authorize:
-  #   handler: bin/auth
-  #   events:
-  #     - httpApi:
-    #       path: /login
-    #       method: post
+  login:
+    handler: bootstrap
+    package:
+      patterns:
+        - bin/*
+      artifact: bin/login.zip
+      individually: true
+    events:
+      - httpApi:
+          path: /login
+          method: post

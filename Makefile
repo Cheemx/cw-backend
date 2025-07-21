@@ -2,7 +2,11 @@ build-hello:
 	cd hello && env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o ../bin/bootstrap main.go && cd ..
 	cd bin && build-lambda-zip -o hello.zip bootstrap && rm bootstrap && cd ..
 
-build: build-hello
+build-login:
+	cd login && env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o ../bin/bootstrap main.go && cd ..
+	cd bin && build-lambda-zip -o login.zip bootstrap && rm bootstrap && cd ..
+
+build: build-hello build-login
 
 deploy: build
 	serverless deploy --aws-profile cheems-writes --verbose
