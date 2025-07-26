@@ -2,31 +2,90 @@ app: cheems-writes
 service: cw-backend
 frameworkVersion: '>= 3.38.0'
 
+plugins:
+  - serverless-dotenv-plugin
+
 provider:
   name: aws
   runtime: provided.al2023
   region: ap-south-1
+  stage: dev
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+    JWT_SECRET: ${env:JWT_SECRET}
+
+package: 
+  individually: true
 
 functions:
   hello:
     handler: bootstrap
     package:
-      patterns:
-        - bin/*
       artifact: bin/hello.zip
-      individually: true
     events:
       - httpApi:
           path: /hello
           method: get
+
   login:
     handler: bootstrap
     package:
-      patterns:
-        - bin/*
       artifact: bin/login.zip
-      individually: true
     events:
       - httpApi:
           path: /login
           method: post
+
+  tb-getAll:
+    handler: bootstrap
+    package:
+      artifact: bin/tbGetAll.zip
+    events:
+      - httpApi:
+          path: /tb/getall
+          method: get
+
+  tb-getOne:
+    handler: bootstrap
+    package:
+      artifact: bin/tbGetOne.zip
+    events:
+      - httpApi:
+          path: /tb/getOne/{slug}
+          method: get
+
+  lc-getAll:
+    handler: bootstrap
+    package:
+      artifact: bin/lcGetAll.zip
+    events:
+      - httpApi:
+          path: /lc/getAll
+          method: get
+
+  lc-getOne:
+    handler: bootstrap
+    package:
+      artifact: bin/lcGetOne.zip
+    events:
+      - httpApi:
+          path: /lc/getOne/{problemNo}
+          method: get
+
+  wc-getAll:
+    handler: bootstrap
+    package:
+      artifact: bin/wcGetAll.zip
+    events:
+      - httpApi:
+          path: /wc/getAll
+          method: get
+
+  wc-getOne:
+    handler: bootstrap
+    package:
+      artifact: bin/wcGetOne.zip
+    events:
+      - httpApi:
+          path: /wc/getOne/{slug}
+          method: get
