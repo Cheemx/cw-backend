@@ -8,3 +8,5 @@
 
 .serverless/
 *.zip
+node_modules
+.env
