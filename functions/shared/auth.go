@@ -20,7 +20,7 @@ func RequireAuth(authHeader string) (bool, error) {
 		return jwtKey, nil
 	})
 	if err != nil || !token.Valid {
-		return false, errors.New(err.Error())
+		return false, err
 	}
 	return true, nil
 }
