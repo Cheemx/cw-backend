@@ -1,4 +1,4 @@
-package tbcrud
+package main
 
 import (
 	"context"

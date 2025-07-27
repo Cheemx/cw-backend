@@ -1,4 +1,4 @@
-package lccrud
+package main
 
 import (
 	"context"

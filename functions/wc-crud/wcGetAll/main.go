@@ -1,4 +1,4 @@
-package wccrud
+package main
 
 import (
 	"context"

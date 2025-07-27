@@ -9,7 +9,7 @@ import (
 
 var (
 	clientInstance *mongo.Client
-	clientOnce     *sync.Once
+	clientOnce     = new(sync.Once)
 )
 
 func GetClient(uri string) (*mongo.Client, error) {
@@ -18,6 +18,9 @@ func GetClient(uri string) (*mongo.Client, error) {
 	clientOnce.Do(func() {
 		clientOptions := options.Client().ApplyURI(uri)
 		clientInstance, err = mongo.Connect(clientOptions)
+		if err != nil {
+			println("Mongo connection error:", err.Error())
+		}
 	})
 
 	return clientInstance, err

@@ -6,7 +6,7 @@
 
 **/go.sum
 
-.serverless/
+.serverless
 *.zip
 node_modules
 .env
