@@ -16,6 +16,7 @@ provider:
   runtime: provided.al2023
   region: ap-south-1
   stage: dev
+  memorySize: 1024
   environment:
     MONGO_URI: ${env:MONGO_URI}
     JWT_SECRET: ${env:JWT_SECRET}
@@ -64,6 +65,16 @@ functions:
           path: /tb/getOne/{slug}
           method: get
 
+  tb-create:
+    handler: bootstrap
+    package:
+      artifact: bin/tbCreate.zip
+      individually: true
+    events:
+      - httpApi:
+          path: /tb/create
+          method: post
+
   lc-getAll:
     handler: bootstrap
     package:
@@ -84,6 +95,16 @@ functions:
           path: /lc/getOne/{problemNo}
           method: get
 
+  lc-create:
+    handler: bootstrap
+    package:
+      artifact: bin/lcCreate.zip
+      individually: true
+    events:
+      - httpApi:
+          path: /lc/create
+          method: post
+
   wc-getAll:
     handler: bootstrap
     package:
@@ -102,3 +123,13 @@ functions:
       - httpApi:
           path: /wc/getOne/{slug}
           method: get
+
+  wc-create:
+    handler: bootstrap
+    package:
+      artifact: bin/wcCreate.zip
+      individually: true
+    events:
+      - httpApi:
+          path: /wc/create
+          method: post

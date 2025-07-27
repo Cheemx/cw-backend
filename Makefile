@@ -11,10 +11,13 @@ FUNCTIONS := \
 	login \
 	tb-crud/tbGetAll \
 	tb-crud/tbGetOne \
+	tb-crud/tbCreate \
 	lc-crud/lcGetAll \
 	lc-crud/lcGetOne \
+	lc-crud/lcCreate \
 	wc-crud/wcGetAll \
-	wc-crud/wcGetOne
+	wc-crud/wcGetOne \
+	wc-crud/wcCreate
 
 # === AUTO BUILD RULES ===
 define build_lambda
@@ -44,7 +47,9 @@ $(foreach f,$(filter-out hello login,$(FUNCTIONS)),$(eval $(call build_lambda,$(
 $(foreach f,$(filter hello login,$(FUNCTIONS)),$(eval $(call build_simple,$(f))))
 
 # === ALIASES ===
-build: $(addprefix build-,$(notdir $(FUNCTIONS)))
+.PHONY: build
+build: $(addprefix build-,$(FUNCTIONS))
+	@echo "✅ All functions built successfully!"
 
 deploy: build
 	serverless deploy --aws-profile cheems-writes --verbose
