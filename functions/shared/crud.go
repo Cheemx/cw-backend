@@ -3,6 +3,8 @@ package shared
 import (
 	"context"
 	"encoding/json"
+	"reflect"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -92,6 +94,61 @@ func GetOne(uri string, collName string, res interface{}, param string, c contex
 	return events.APIGatewayV2HTTPResponse{
 		StatusCode: 200,
 		Body:       string(body),
+		Headers: map[string]string{
+			"Content-Type": "application/json",
+		},
+	}, nil
+}
+
+func Create(uri string, collName string, res interface{}, c context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
+	authHeader := req.Headers["Authorization"]
+	ok, err := RequireAuth(authHeader)
+	if !ok || err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 500,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	if err := json.Unmarshal([]byte(req.Body), res); err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 400,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	val := reflect.ValueOf(res).Elem()
+	field := val.FieldByName("CreatedAt")
+	if field.IsValid() && field.CanSet() && field.Type() == reflect.TypeOf(time.Time{}) {
+		field.Set(reflect.ValueOf(time.Now()))
+	}
+
+	coll, erro := GetCollection(collName, uri)
+	if erro != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 500,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	_, e := coll.InsertOne(c, res)
+	if e != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 500,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, e
+	}
+
+	return events.APIGatewayV2HTTPResponse{
+		StatusCode: 201,
 		Headers: map[string]string{
 			"Content-Type": "application/json",
 		},
