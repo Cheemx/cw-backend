@@ -20,6 +20,21 @@ provider:
   environment:
     MONGO_URI: ${env:MONGO_URI}
     JWT_SECRET: ${env:JWT_SECRET}
+  httpApi:
+    cors:
+      allowedOrigins:
+        - https://cheems-writes.vercel.app
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - Origin 
+      allowedMethods:
+        - GET 
+        - POST 
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowedCredentials: true
 
 package: 
   individually: true
