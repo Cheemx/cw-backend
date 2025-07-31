@@ -90,6 +90,16 @@ functions:
           path: /tb/create
           method: post
 
+  tb-delete:
+    handler: bootstrap
+    package: 
+      artifact: bin/tbDelete.zip
+      individually: true
+    events:
+      -httpApi:
+        path: /tb/delete/{slug}
+        method: delete
+
   lc-getAll:
     handler: bootstrap
     package:
@@ -98,16 +108,6 @@ functions:
     events:
       - httpApi:
           path: /lc/getAll
-          method: get
-
-  lc-getOne:
-    handler: bootstrap
-    package:
-      artifact: bin/lcGetOne.zip
-      individually: true
-    events:
-      - httpApi:
-          path: /lc/getOne/{problemNo}
           method: get
 
   lc-create:
@@ -119,6 +119,16 @@ functions:
       - httpApi:
           path: /lc/create
           method: post
+
+  lc-delete:
+    handler: bootstrap
+    package: 
+      artifact: bin/lcDelete.zip
+      individually: true
+    events:
+      -httpApi:
+        path: /lc/delete/{problemNo}
+        method: delete
 
   wc-getAll:
     handler: bootstrap
@@ -148,3 +158,13 @@ functions:
       - httpApi:
           path: /wc/create
           method: post
+
+  wc-delete:
+    handler: bootstrap
+    package: 
+      artifact: bin/wcDelete.zip
+      individually: true
+    events:
+      -httpApi:
+        path: /wc/delete/{slug}
+        method: delete
