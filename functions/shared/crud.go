@@ -105,7 +105,7 @@ func Create(uri string, collName string, res interface{}, c context.Context, req
 	ok, err := RequireAuth(authHeader)
 	if !ok || err != nil {
 		return events.APIGatewayV2HTTPResponse{
-			StatusCode: 500,
+			StatusCode: 401,
 			Headers: map[string]string{
 				"Content-Type": "application/json",
 			},
@@ -149,6 +149,121 @@ func Create(uri string, collName string, res interface{}, c context.Context, req
 
 	return events.APIGatewayV2HTTPResponse{
 		StatusCode: 201,
+		Headers: map[string]string{
+			"Content-Type": "application/json",
+		},
+	}, nil
+}
+
+func Update(uri string, collName string, res interface{}, param string, c context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
+	authHeader := req.Headers["Authorization"]
+	ok, err := RequireAuth(authHeader)
+	if !ok || err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 401,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	slug := req.PathParameters[param]
+
+	if err := json.Unmarshal([]byte(req.Body), res); err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 400,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	coll, err := GetCollection(collName, uri)
+	if err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 500,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	val := reflect.ValueOf(res).Elem()
+	title := val.FieldByName("Title")
+	description := val.FieldByName("Description")
+	s := val.FieldByName("Slug")
+	content := val.FieldByName("Content")
+
+	update := bson.M{
+		"$set": bson.M{
+			"title":       title,
+			"description": description,
+			"slug":        s,
+			"content":     content,
+		},
+	}
+	result, e := coll.UpdateOne(c, bson.M{"slug": slug}, update)
+	if e != nil || result.MatchedCount == 0 {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 500,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, e
+	}
+	return events.APIGatewayV2HTTPResponse{
+		StatusCode: 201,
+		Headers: map[string]string{
+			"Content-Type": "application/json",
+		},
+	}, nil
+}
+
+func Delete(uri string, collName string, res interface{}, param string, c context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
+	authHeader := req.Headers["Authorization"]
+	ok, err := RequireAuth(authHeader)
+	if !ok || err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 401,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	slug := req.PathParameters[param]
+
+	if err := json.Unmarshal([]byte(req.Body), res); err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 400,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	coll, err := GetCollection(collName, uri)
+	if err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 500,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, err
+	}
+
+	result, eror := coll.DeleteOne(c, bson.M{"slug": slug})
+	if eror != nil || result.DeletedCount == 0 {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: 500,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+		}, eror
+	}
+
+	return events.APIGatewayV2HTTPResponse{
+		StatusCode: 204,
 		Headers: map[string]string{
 			"Content-Type": "application/json",
 		},

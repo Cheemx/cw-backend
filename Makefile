@@ -13,13 +13,15 @@ FUNCTIONS := \
 	tb-crud/tbGetOne \
 	tb-crud/tbCreate \
 	tb-crud/tbDelete \
+	tb-crud/tbUpdate \
 	lc-crud/lcGetAll \
 	lc-crud/lcCreate \
 	lc-crud/lcDelete \
 	wc-crud/wcGetAll \
 	wc-crud/wcGetOne \
 	wc-crud/wcCreate \
-	wc-crud/wcDelete
+	wc-crud/wcDelete \
+	wc-crud/wcUpdate
 
 # === AUTO BUILD RULES ===
 define build_lambda

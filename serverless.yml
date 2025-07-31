@@ -100,6 +100,16 @@ functions:
         path: /tb/delete/{slug}
         method: delete
 
+  tb-update:
+    handler: bootstrap
+    package: 
+      artifact: bin/tbUpdate.zip
+      individually: true
+    events:
+      -httpApi:
+        path: /tb/update/{slug}
+        method: put
+
   lc-getAll:
     handler: bootstrap
     package:
@@ -168,3 +178,13 @@ functions:
       -httpApi:
         path: /wc/delete/{slug}
         method: delete
+
+  wc-update:
+    handler: bootstrap
+    package: 
+      artifact: bin/wcUpdate.zip
+      individually: true
+    events:
+      -httpApi:
+        path: /wc/update/{slug}
+        method: put
