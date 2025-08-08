@@ -34,7 +34,7 @@ provider:
         - PUT
         - DELETE
         - OPTIONS
-      allowedCredentials: true
+      allowCredentials: true
 
 package: 
   individually: true
@@ -96,9 +96,9 @@ functions:
       artifact: bin/tbDelete.zip
       individually: true
     events:
-      -httpApi:
-        path: /tb/delete/{slug}
-        method: delete
+      - httpApi:
+          path: /tb/delete/{slug}
+          method: delete
 
   tb-update:
     handler: bootstrap
@@ -106,9 +106,9 @@ functions:
       artifact: bin/tbUpdate.zip
       individually: true
     events:
-      -httpApi:
-        path: /tb/update/{slug}
-        method: put
+      - httpApi:
+          path: /tb/update/{slug}
+          method: put
 
   lc-getAll:
     handler: bootstrap
@@ -136,9 +136,9 @@ functions:
       artifact: bin/lcDelete.zip
       individually: true
     events:
-      -httpApi:
-        path: /lc/delete/{problemNo}
-        method: delete
+      - httpApi:
+          path: /lc/delete/{problemNo}
+          method: delete
 
   wc-getAll:
     handler: bootstrap
@@ -175,9 +175,9 @@ functions:
       artifact: bin/wcDelete.zip
       individually: true
     events:
-      -httpApi:
-        path: /wc/delete/{slug}
-        method: delete
+      - httpApi:
+          path: /wc/delete/{slug}
+          method: delete
 
   wc-update:
     handler: bootstrap
@@ -185,6 +185,6 @@ functions:
       artifact: bin/wcUpdate.zip
       individually: true
     events:
-      -httpApi:
-        path: /wc/update/{slug}
-        method: put
+      - httpApi:
+          path: /wc/update/{slug}
+          method: put
