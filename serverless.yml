@@ -20,6 +20,8 @@ provider:
   environment:
     MONGO_URI: ${env:MONGO_URI}
     JWT_SECRET: ${env:JWT_SECRET}
+    ADMIN: ${env:ADMIN}
+    PASS: ${env:PASS}
   httpApi:
     cors:
       allowedOrigins:
