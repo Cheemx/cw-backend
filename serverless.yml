@@ -42,15 +42,15 @@ package:
   individually: true
 
 functions:
-  hello:
-    handler: bootstrap
-    package:
-      artifact: bin/hello.zip
-      individually: true
-    events:
-      - httpApi:
-          path: /hello
-          method: get
+  # hello:
+  #   handler: bootstrap
+  #   package:
+  #     artifact: bin/hello.zip
+  #     individually: true
+  #   events:
+  #     - httpApi:
+  #         path: /hello
+  #         method: get
 
   login:
     handler: bootstrap

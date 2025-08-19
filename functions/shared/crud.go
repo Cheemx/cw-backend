@@ -101,7 +101,7 @@ func GetOne(uri string, collName string, res interface{}, param string, c contex
 }
 
 func Create(uri string, collName string, res interface{}, c context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
-	authHeader := req.Headers["Authorization"]
+	authHeader := req.Headers["authorization"]
 	ok, err := RequireAuth(authHeader)
 	if !ok || err != nil {
 		return events.APIGatewayV2HTTPResponse{
@@ -156,7 +156,7 @@ func Create(uri string, collName string, res interface{}, c context.Context, req
 }
 
 func Update(uri string, collName string, res interface{}, param string, c context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
-	authHeader := req.Headers["Authorization"]
+	authHeader := req.Headers["authorization"]
 	ok, err := RequireAuth(authHeader)
 	if !ok || err != nil {
 		return events.APIGatewayV2HTTPResponse{
@@ -220,7 +220,7 @@ func Update(uri string, collName string, res interface{}, param string, c contex
 }
 
 func Delete(uri string, collName string, res interface{}, param string, c context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
-	authHeader := req.Headers["Authorization"]
+	authHeader := req.Headers["authorization"]
 	ok, err := RequireAuth(authHeader)
 	if !ok || err != nil {
 		return events.APIGatewayV2HTTPResponse{
